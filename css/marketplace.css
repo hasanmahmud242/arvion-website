@@ -2,7 +2,8 @@
 .site-nav { padding:0; background:rgba(251,250,247,.98); }
 .marketplace-header { padding:0; }
 .marketplace-main { align-items:center; display:flex; gap:1.35rem; min-height:78px; }
-.marketplace-main .navbar-brand { flex:0 0 auto; font-size:1.45rem; margin:0; }
+.marketplace-main .navbar-brand { align-items:center; display:flex; flex:0 0 auto; font-size:1.45rem; gap:.5rem; margin:0; }
+.marketplace-main .navbar-brand img { display:block; flex:0 0 auto; }
 .marketplace-search { border:1px solid var(--ink); border-radius:2rem; display:flex; flex:1 1 470px; height:42px; max-width:650px; overflow:hidden; }
 .marketplace-search input { background:transparent; border:0; color:var(--ink); font:inherit; min-width:0; outline:0; padding:0 .95rem; width:100%; }
 .marketplace-search input::placeholder { color:#84908a; }
@@ -22,6 +23,9 @@
 .marketplace-categories a:hover { color:var(--orange); }
 .marketplace-categories .category-all { align-items:center; background:var(--sand); border-radius:1.2rem; display:flex; gap:.45rem; padding:.42rem .72rem; }
 .marketplace-categories .category-all:hover { background:var(--lime); color:var(--ink); }
+.floating-whatsapp { align-items:center; background:#25d366; border:3px solid white; border-radius:2rem; bottom:1.25rem; box-shadow:0 10px 24px rgba(20,66,43,.28); color:#fff; display:flex; gap:.45rem; font-size:.78rem; padding:.64rem .9rem; position:fixed; right:1.25rem; z-index:1100; }
+.floating-whatsapp:hover { background:#1eae54; color:#fff; transform:translateY(-2px); }
+.floating-whatsapp span { border:1.5px solid currentColor; border-radius:50%; display:grid; font-size:1rem; height:1.25rem; line-height:1; place-items:center; width:1.25rem; }
 .product-column { display:flex; }
 .product-card { width:100%; display:flex; flex-direction:column; border:1px solid #e2e5df; border-radius:.45rem; overflow:hidden; box-shadow:none; }
 .product-card:hover { box-shadow:0 14px 30px rgba(24,52,45,.12); }
@@ -32,6 +36,7 @@
 .product-info { display:flex; flex:1; flex-direction:column; padding:1rem; }
 .product-category { font-size:.64rem; }
 .product-title { min-height:2.55rem; line-height:1.25; margin:.35rem 0 .45rem; }
+.product-description { color:var(--muted); display:-webkit-box; font-size:.73rem; line-height:1.48; margin:0 0 1rem; min-height:3.3rem; overflow:hidden; -webkit-box-orient:vertical; -webkit-line-clamp:3; }
 .product-rating { color:#e97a3d; font-size:.82rem; font-weight:800; }
 .product-rating span { color:var(--muted); font-size:.68rem; font-weight:600; }
 .product-sold { color:var(--muted); font-size:.7rem; margin:.28rem 0 .9rem; }
@@ -57,4 +62,6 @@
   .marketplace-categories { align-items:stretch; flex-direction:column; gap:0; margin-top:.2rem; padding:.5rem 0 1rem; }
   .marketplace-categories a { border-bottom:1px solid var(--line); padding:.72rem .1rem; }
   .marketplace-categories .category-all { background:transparent; border-radius:0; }
+  .floating-whatsapp { bottom:1rem; padding:.66rem; right:1rem; }
+  .floating-whatsapp b { display:none; }
 }
