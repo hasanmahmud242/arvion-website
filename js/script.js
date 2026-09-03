@@ -48,8 +48,17 @@ const products = [
   { name: 'Universal Adapter Set', category: 'power', label: 'Power & utility', price: '৳420', tag: 'HANDY', image: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80' }
 ];
 
-function productMarkup(product) {
-  return `<div class="col-sm-6 col-lg-4 product-column" data-category="${product.category}"><article class="product-card"><a href="contact.html" class="product-image-wrap"><img class="product-image" src="${product.image}" alt="${product.name}"><span class="product-tag">${product.tag}</span></a><div class="product-info"><span class="product-category">${product.label}</span><h3 class="product-title">${product.name}</h3><div class="product-bottom"><span class="product-price">${product.price}</span><button class="add-button" type="button" data-add>ADD +</button></div></div></article></div>`;
+function productMarkup(product, index) {
+  const dealData = [
+    ['৳3,390', '4.8', '124', '50+ sold', '15% OFF'], ['৳2,590', '4.7', '86', '30+ sold', '17% OFF'],
+    ['৳1,490', '4.9', '211', '100+ sold', '16% OFF'], ['৳1,750', '4.6', '57', '20+ sold', '15% OFF'],
+    ['৳2,090', '4.7', '73', '40+ sold', '14% OFF'], ['৳1,950', '4.8', '92', '60+ sold', '15% OFF'],
+    ['৳2,790', '4.7', '104', '70+ sold', '16% OFF'], ['৳790', '4.9', '193', '150+ sold', '18% OFF'],
+    ['৳3,790', '4.6', '41', '15+ sold', '13% OFF'], ['৳1,790', '4.8', '88', '50+ sold', '17% OFF'],
+    ['৳1,890', '4.7', '69', '40+ sold', '16% OFF'], ['৳520', '4.9', '156', '120+ sold', '19% OFF']
+  ][index];
+  const [oldPrice, rating, reviews, sold, discount] = dealData;
+  return `<div class="col-6 col-md-4 col-xl-3 product-column" data-category="${product.category}"><article class="product-card"><a href="contact.html" class="product-image-wrap"><img class="product-image" src="${product.image}" alt="${product.name}"><span class="product-tag">${product.tag}</span><span class="product-stock">In stock</span></a><div class="product-info"><span class="product-category">${product.label}</span><h3 class="product-title">${product.name}</h3><div class="product-rating">★ ${rating} <span>(${reviews})</span></div><p class="product-sold">${sold}</p><div class="product-bottom"><div class="product-price-wrap"><span class="product-price">${product.price}</span><span><span class="product-old-price">${oldPrice}</span> <span class="product-discount">${discount}</span></span></div><button class="market-add" type="button" data-add><span>ADD TO CART</span><span>+</span></button></div></div></article></div>`;
 }
 
 function renderProducts() {
