@@ -8,7 +8,7 @@ function applyBranding() {
     meta.content = meta.content.replace(/ARVION/gi, brandName);
   });
   document.querySelectorAll('.navbar-brand, .footer-brand').forEach(brand => {
-    brand.innerHTML = 'TUSO<span>ROVA</span>';
+    brand.textContent = brandName;
   });
   const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const textNodes = [];
