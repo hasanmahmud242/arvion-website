@@ -1,4 +1,3 @@
-@import url("marketplace.css");
 :root { --ink:#18342d; --muted:#64716d; --paper:#fbfaf7; --sand:#f0eee6; --lime:#d5ef54; --orange:#ef855b; --line:#dce1dc; }
 * { box-sizing:border-box; }
 body { font-family:"DM Sans",sans-serif; background:var(--paper); color:var(--ink); }
