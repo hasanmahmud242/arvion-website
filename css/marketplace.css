@@ -98,6 +98,17 @@
 .product-details-modal .modal-footer { border-top:1px solid var(--line); gap:.6rem; padding:.85rem 1.15rem; }
 .details-close { background:transparent; border:1px solid #c9d0c9; border-radius:.25rem; color:var(--ink); font-weight:800; padding:.47rem .72rem; }
 .details-close:hover { background:var(--sand); }
+.order-guide-section { background:var(--sand); padding:4.5rem 0; }
+.order-guide-heading { margin-bottom:2rem; max-width:670px; }
+.order-guide-heading h2 { color:var(--ink); font-size:clamp(1.9rem,3.5vw,3rem); letter-spacing:-.055em; line-height:1.1; margin:0 0 .7rem; }
+.order-guide-heading > p:last-child { color:var(--muted); line-height:1.6; margin:0; }
+.order-step { background:white; border:1px solid #e0e4dc; height:100%; padding:1.25rem; }
+.order-step span { color:var(--orange); font-family:var(--heading); font-size:.78rem; font-weight:800; }
+.order-step h3 { color:var(--ink); font-size:1rem; margin:.9rem 0 .45rem; }
+.order-step p { color:var(--muted); font-size:.84rem; line-height:1.55; margin:0; }
+.order-guide-location { color:var(--ink); font-size:.84rem; font-weight:700; margin:1.5rem 0 0; }
+.about-location { border-top:1px solid var(--line); margin-top:2.6rem; padding-top:1.35rem; }
+.about-location p:last-child { color:var(--ink); font-family:var(--heading); font-size:1.05rem; margin:0; }
 @media (max-width:575.98px) { .product-image { height:170px; }.product-info { padding:.78rem; }.product-title { font-size:.91rem; }.market-add { font-size:.62rem; padding:.5rem .55rem; }.product-bottom { gap:.35rem; }.product-price { font-size:.95rem; }.product-stock { bottom:.55rem; right:.55rem; }.shop-section .product-info { padding:.62rem .08rem .1rem; }.shop-section .product-title { font-size:.83rem; }.shop-section .product-description { font-size:.68rem; -webkit-line-clamp:2; }.shop-section .product-price { font-size:.92rem; }.shop-section .market-add { font-size:.58rem; padding:.43rem .45rem; }.product-gallery-modal .modal-header { padding:.85rem 1rem; }.gallery-main-image { height:58vh; }.gallery-thumbnails { padding:.7rem .9rem .85rem; }.gallery-thumbnail { height:54px; width:54px; } }
 @media (max-width:991.98px) {
   .marketplace-main { flex-wrap:wrap; gap:.7rem; min-height:auto; padding:.8rem 0; }

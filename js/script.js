@@ -1,6 +1,7 @@
 const brandName = 'TUSOROVA';
 const whatsappNumber = '8801987510088';
-const displayPhoneNumber = '+880 1987-510088';
+const contactNumber = '8801845552350';
+const displayContactNumber = '+880 1845-552350';
 const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 
 function applyBranding() {
@@ -20,17 +21,17 @@ function applyBranding() {
   document.querySelectorAll('a[href*="ARVION"]').forEach(link => {
     link.href = link.href.replace(/ARVION/g, brandName);
   });
-  document.querySelectorAll('a[href*="8801777887879"]').forEach(link => {
+  document.querySelectorAll('a[href*="wa.me/8801777887879"]').forEach(link => {
     link.href = link.href.replace(/8801777887879/g, whatsappNumber);
   });
   document.querySelectorAll('a[href^="tel:"]').forEach(link => {
-    link.href = `tel:${whatsappNumber}`;
+    link.href = `tel:${contactNumber}`;
   });
   const phoneWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const phoneNodes = [];
   while (phoneWalker.nextNode()) phoneNodes.push(phoneWalker.currentNode);
   phoneNodes.forEach(node => {
-    node.nodeValue = node.nodeValue.replace(/\+880 1777-887879/g, displayPhoneNumber);
+    node.nodeValue = node.nodeValue.replace(/\+880 1777-887879/g, displayContactNumber);
   });
 }
 
@@ -38,7 +39,7 @@ function buildMarketplaceHeader() {
   const nav = document.querySelector('.site-nav');
   if (!nav) return;
   const currentSearch = new URLSearchParams(window.location.search).get('search') || '';
-  nav.innerHTML = `<div class="container marketplace-header"><div class="marketplace-main"><a class="navbar-brand" href="index.html" aria-label="${brandName} home"><img src="assets/tusorova-mark.svg" alt="" width="36" height="36"><span>${brandName}</span></a><form class="marketplace-search" role="search"><label class="visually-hidden" for="siteSearch">Search TUSOROVA products</label><input id="siteSearch" type="search" value="${escapeHtml(currentSearch)}" placeholder="Search cookers, kettles, blenders and more" autocomplete="off"><button type="submit" aria-label="Search products">⌕</button></form><div class="marketplace-actions"><a class="account-link" href="contact.html"><span>Need help?</span><b>Support</b></a><a class="marketplace-whatsapp" href="https://wa.me/${whatsappNumber}?text=Hello%20${brandName}!%20I%27m%20interested%20in%20your%20products." target="_blank" rel="noopener" aria-label="Chat with TUSOROVA on WhatsApp"><img src="assets/whatsapp-chat.svg" alt=""><b>WhatsApp</b></a></div><button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Open navigation"><span class="navbar-toggler-icon"></span></button></div><div class="collapse navbar-collapse" id="mainNav"><div class="marketplace-categories"><a class="category-all" href="products.html">☰ <span>All products</span></a><a href="products.html?category=kitchen">Kitchen essentials</a><a href="products.html?category=home">Home care</a><a href="products.html?category=power">Power & utility</a><a href="products.html?category=personal">Personal care</a><a href="products.html">New arrivals</a><a href="products.html#shopProducts">Deals</a><a href="about.html">Our story</a><a href="contact.html">Support</a></div></div></div>`;
+  nav.innerHTML = `<div class="container marketplace-header"><div class="marketplace-main"><a class="navbar-brand" href="index.html" aria-label="${brandName} home"><img src="assets/tusorova-mark.svg" alt="" width="36" height="36"><span>${brandName}</span></a><form class="marketplace-search" role="search"><label class="visually-hidden" for="siteSearch">Search TUSOROVA products</label><input id="siteSearch" type="search" value="${escapeHtml(currentSearch)}" placeholder="Search cookers, kettles, blenders and more" autocomplete="off"><button type="submit" aria-label="Search products">⌕</button></form><div class="marketplace-actions"><a class="account-link" href="contact.html"><span>Need help?</span><b>Support</b></a><a class="marketplace-whatsapp" href="https://wa.me/${whatsappNumber}?text=Hello%20${brandName}!%20I%27m%20interested%20in%20your%20products." target="_blank" rel="noopener" aria-label="Chat with ${brandName} on WhatsApp"><img src="assets/whatsapp-chat.svg" alt=""><b>${brandName}</b></a></div><button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Open navigation"><span class="navbar-toggler-icon"></span></button></div><div class="collapse navbar-collapse" id="mainNav"><div class="marketplace-categories"><a class="category-all" href="products.html">☰ <span>All products</span></a><a href="products.html?category=kitchen">Kitchen essentials</a><a href="products.html?category=home">Home care</a><a href="products.html?category=power">Power & utility</a><a href="products.html?category=personal">Personal care</a><a href="products.html">New arrivals</a><a href="products.html#shopProducts">Deals</a><a href="products.html#orderGuide">Order guide</a><a href="about.html">Our story</a><a href="contact.html">Support</a></div></div></div>`;
 }
 
 const catalogImages = {
