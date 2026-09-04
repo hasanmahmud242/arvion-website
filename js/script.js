@@ -53,11 +53,12 @@ const catalogImages = {
   power: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80',
   coffee: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80',
   lamp: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80',
-  hawkinsInduction: 'assets/hawkins-agi-883.jpg'
+  hawkinsInductionDisplay: 'assets/hawkins-agi-883-display.png',
+  hawkinsInductionGallery: 'assets/hawkins-agi-883-gallery.png'
 };
 
 const products = [
-  { name: 'Hawkins Black Berry Inverter Induction Cooker', brand: 'Hawkins Black Berry', model: 'AGI-883', category: 'kitchen', label: 'Kitchen', price: '৳3,400', tag: 'INVERTER', description: 'Touch controls, LED display, timer, lock, auto shut-off, overheat protection, and up to 85% energy saving.', image: catalogImages.hawkinsInduction, fit: 'contain' },
+  { name: 'Hawkins Black Berry Inverter Induction Cooker', brand: 'Hawkins Black Berry', model: 'AGI-883', category: 'kitchen', label: 'Kitchen', price: '৳3,400', tag: 'INVERTER', description: 'Touch controls, LED display, timer, lock, auto shut-off, overheat protection, and up to 85% energy saving.', image: catalogImages.hawkinsInductionDisplay, gallery: [catalogImages.hawkinsInductionDisplay, catalogImages.hawkinsInductionGallery], fit: 'contain' },
   { name: 'Infrared Cooker', category: 'kitchen', label: 'Kitchen', price: '৳3,350', tag: 'POPULAR', description: 'Versatile glass-top cooker for quick meals and easy clean-up.', image: catalogImages.cooker },
   { name: 'Hotpot Cooker', category: 'kitchen', label: 'Kitchen', price: '৳2,490', tag: 'EASY MEALS', description: 'A handy electric pot for noodles, soup, tea, and small portions.', image: catalogImages.kitchen },
   { name: 'Roti Maker', category: 'kitchen', label: 'Kitchen', price: '৳2,290', tag: 'QUICK COOK', description: 'Makes soft flatbreads quickly for a simpler breakfast or dinner.', image: catalogImages.kitchen },
@@ -98,19 +99,54 @@ const products = [
   { name: 'Fabric Lint Remover', category: 'home', label: 'Home care', price: '৳850', tag: 'CARE', description: 'Refresh sweaters and fabrics by removing loose lint and fuzz.', image: catalogImages.home }
 ];
 
-function productMarkup(product) {
+function productMarkup(product, index) {
   const message = `Hello ${brandName}! I would like to order:\n\nProduct: ${product.name}\nPrice: ${product.price}\nQuantity: 1\n\nPlease tell me the delivery details, delivery charge, and payment options.`;
   const orderUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   const brandModel = product.brand ? `<p class="product-model">${escapeHtml(product.brand)} · Model ${escapeHtml(product.model)}</p>` : '';
   const imageClass = product.fit === 'contain' ? ' product-image-contain' : '';
-  return `<div class="col-6 col-md-4 col-xl-3 product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><a href="${orderUrl}" class="product-image-wrap" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><img class="product-image${imageClass}" src="${product.image}" alt="${escapeHtml(product.name)}"><span class="product-tag">${product.tag}</span><span class="product-stock">Order on WhatsApp</span></a><div class="product-info"><span class="product-category">${product.label}</span>${brandModel}<h3 class="product-title">${escapeHtml(product.name)}</h3><p class="product-description">${escapeHtml(product.description)}</p><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
+  return `<div class="col-6 col-md-4 col-xl-3 product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><button class="product-image-wrap product-gallery-trigger" type="button" data-gallery-index="${index}" aria-label="View photos for ${escapeHtml(product.name)}" aria-haspopup="dialog"><img class="product-image${imageClass}" src="${product.image}" alt="${escapeHtml(product.name)}"><span class="product-tag">${product.tag}</span><span class="product-stock">View photos</span></button><div class="product-info"><span class="product-category">${product.label}</span>${brandModel}<h3 class="product-title">${escapeHtml(product.name)}</h3><p class="product-description">${escapeHtml(product.description)}</p><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
 }
 
 function renderProducts() {
   const featured = document.querySelector('#featuredProducts');
   const shop = document.querySelector('#shopProducts');
-  if (featured) featured.innerHTML = products.slice(0, 4).map(productMarkup).join('');
-  if (shop) shop.innerHTML = products.map(productMarkup).join('');
+  if (featured) featured.innerHTML = products.slice(0, 4).map((product, index) => productMarkup(product, index)).join('');
+  if (shop) shop.innerHTML = products.map((product, index) => productMarkup(product, index)).join('');
+}
+
+function setupProductGallery() {
+  const triggers = document.querySelectorAll('.product-gallery-trigger');
+  if (!triggers.length || !window.bootstrap) return;
+
+  let modalElement = document.querySelector('#productGalleryModal');
+  if (!modalElement) {
+    document.body.insertAdjacentHTML('beforeend', '<div class="modal fade" id="productGalleryModal" tabindex="-1" aria-labelledby="productGalleryTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content product-gallery-modal"><div class="modal-header"><div><p class="gallery-kicker">PRODUCT PHOTOS</p><h2 class="modal-title" id="productGalleryTitle"></h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close photo gallery"></button></div><div class="modal-body"><img class="gallery-main-image" id="galleryMainImage" src="" alt=""><div class="gallery-thumbnails" id="galleryThumbnails"></div></div></div></div></div>');
+    modalElement = document.querySelector('#productGalleryModal');
+  }
+
+  const modal = window.bootstrap.Modal.getOrCreateInstance(modalElement);
+  const title = modalElement.querySelector('#productGalleryTitle');
+  const mainImage = modalElement.querySelector('#galleryMainImage');
+  const thumbnails = modalElement.querySelector('#galleryThumbnails');
+  const selectImage = (images, productName, selectedIndex) => {
+    mainImage.src = images[selectedIndex];
+    mainImage.alt = `${productName} — photo ${selectedIndex + 1}`;
+    thumbnails.innerHTML = images.map((image, imageIndex) => `<button class="gallery-thumbnail${imageIndex === selectedIndex ? ' active' : ''}" type="button" data-gallery-image="${imageIndex}" aria-label="View photo ${imageIndex + 1} of ${escapeHtml(productName)}"${imageIndex === selectedIndex ? ' aria-current="true"' : ''}><img src="${image}" alt=""></button>`).join('');
+  };
+
+  triggers.forEach(trigger => trigger.addEventListener('click', () => {
+    const product = products[Number(trigger.dataset.galleryIndex)];
+    if (!product) return;
+    const images = product.gallery || [product.image];
+    title.textContent = product.name;
+    selectImage(images, product.name, 0);
+    modal.show();
+    thumbnails.onclick = event => {
+      const thumbnail = event.target.closest('[data-gallery-image]');
+      if (!thumbnail) return;
+      selectImage(images, product.name, Number(thumbnail.dataset.galleryImage));
+    };
+  }));
 }
 
 function setupFilters() {
@@ -155,6 +191,7 @@ function setupForms() {
 applyBranding();
 buildMarketplaceHeader();
 renderProducts();
+setupProductGallery();
 setupFilters();
 setupSiteSearch();
 setupForms();
