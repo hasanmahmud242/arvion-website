@@ -65,11 +65,22 @@ const catalogImages = {
   novenaAirFryerMain: 'assets/novena-naf-656mp-main.png',
   novenaAirFryerBox: 'assets/novena-naf-656mp-box.png',
   miyakoHandMixerMain: 'assets/miyako-hm-6679-c4-main.png',
-  miyakoHandMixerBox: 'assets/miyako-hm-6679-c4-box.png'
+  miyakoHandMixerBox: 'assets/miyako-hm-6679-c4-box.png',
+  kemeiKm6630Main: 'assets/kemei-km-6630-main.png',
+  kemeiKm6630Box: 'assets/kemei-km-6630-box.png',
+  vgrV318Main: 'assets/vgr-v318-main.png',
+  vgrV318Box: 'assets/vgr-v318-box.png',
+  miyakoMc400tMain: 'assets/miyako-mc-400t-main.png',
+  miyakoMc400tBox: 'assets/miyako-mc-400t-box.png',
+  miyakoKettle: 'assets/miyako-mjk-2500bs.jpg'
 };
 
 const catalogProducts = [
   { name: 'Hawkins Black Berry Inverter Induction Cooker', brand: 'Hawkins Black Berry', model: 'AGI-883', category: 'kitchen', label: 'Kitchen', price: '৳3,400', tag: 'INVERTER', description: 'Touch controls, LED display, timer, lock, auto shut-off, overheat protection, and up to 85% energy saving.', details: [{ label: 'Model', value: 'AGI-883' }, { label: 'Inverter technology', value: 'Power-saving cooking that can reduce electricity use by up to 85%.' }, { label: 'Controls', value: 'Smart touch sensor controls with a clear digital LED display.' }, { label: 'Cooking features', value: 'Built-in functions, power adjustment, lock function, and preset timer control.' }, { label: 'Glass surface', value: 'High-temperature resistant crystal glass plate with floral artwork.' }, { label: 'Safety', value: 'Built-in overheat protection and automatic shut-off.' }], image: catalogImages.hawkinsInductionDisplay, gallery: [catalogImages.hawkinsInductionDisplay, catalogImages.hawkinsInductionGallery], fit: 'contain' },
+  { name: 'Kemei 4-in-1 Professional Grooming Kit', brand: 'Kemei', model: 'KM-6630', category: 'personal', label: 'Personal care', price: '৳850', tag: '4-IN-1', description: 'Rechargeable 4-in-1 kit for nose, beard, hair, and eyebrow trimming.', details: [{ label: 'Model', value: 'KM-6630' }, { label: 'Nose and ear trimmer', value: 'Safe, fast trimming for unwanted nose and ear hair.' }, { label: 'Beard trimmer head', value: 'For precision edges and daily beard or mustache maintenance.' }, { label: 'Hair trimmer attachment', value: 'For close hair trimming and quick touch-ups.' }, { label: 'Eyebrow trimmer head', value: 'For gentle, accurate eyebrow shaping.' }, { label: 'Power and build', value: 'Rechargeable with an included charging cable; compact stainless-and-black easy-grip body.' }, { label: 'Blades', value: 'Durable washable stainless steel cutter heads for smooth trimming without pulling.' }], image: catalogImages.kemeiKm6630Main, gallery: [catalogImages.kemeiKm6630Main, catalogImages.kemeiKm6630Box], fit: 'contain' },
+  { name: 'VGR Professional Hair Clipper', brand: 'VGR', model: 'V-318 (Super Trim)', category: 'personal', label: 'Personal care', price: '৳1,550', tag: '2000 MAH', description: 'Professional corded or cordless hair clipper with LED display and taper lever.', details: [{ label: 'Model', value: 'V-318 (Super Trim)' }, { label: 'Battery', value: 'Long-lasting 2000 mAh rechargeable lithium battery.' }, { label: 'Operation', value: 'Use cordlessly or plug in while charging.' }, { label: 'Taper lever', value: 'Side adjustment lever for smooth blending and precise fade adjustments.' }, { label: 'Blades', value: 'Precision-ground professional stainless steel blades for smooth, snag-free cutting.' }, { label: 'Display', value: 'Digital LED front display shows the remaining battery percentage.' }, { label: 'Storage', value: 'Integrated hanging loop for convenient hook storage.' }], image: catalogImages.vgrV318Main, gallery: [catalogImages.vgrV318Main, catalogImages.vgrV318Box], fit: 'contain' },
+  { name: 'Miyako Cordless Electric Kettle', brand: 'Miyako', model: 'MJK-2500 BS', category: 'kitchen', label: 'Kitchen', price: '৳1,350', tag: '2.5 LITERS', description: '2.5 L cool-touch cordless kettle with a food-grade stainless steel inner pot.', details: [{ label: 'Model', value: 'MJK-2500 BS' }, { label: 'Capacity', value: '2.5 Liters' }, { label: 'Power rating', value: '1500 W–2000 W.' }, { label: 'Cool-touch body', value: 'Double-wall insulation helps keep the outer body safe to touch.' }, { label: 'Inner pot', value: '304 food-grade stainless steel for safe, odor-free water boiling.' }, { label: 'Cordless base', value: '360° swivel base for easy lifting and placement from any angle.' }, { label: 'Safety', value: 'Automatic shut-off and boil-dry protection.' }, { label: 'Lid', value: 'One-touch lid opening for simple refilling and cleaning.' }], image: catalogImages.miyakoKettle, gallery: [catalogImages.miyakoKettle], fit: 'contain' },
+  { name: 'Miyako Multi 2 Pot Cooker (Rice & Curry)', brand: 'Miyako', model: 'MC-400 T (DOUBLE)', category: 'kitchen', label: 'Kitchen', price: '৳3,750', tag: '3.5 LITERS', description: '3.5 L double-pot cooker for rice, curry, hotpot, boiling, and frying.', details: [{ label: 'Model', value: 'MC-400 T (DOUBLE)' }, { label: 'Capacity', value: '3.5 Liters' }, { label: 'Power rating', value: '1300 Watts for fast heating.' }, { label: 'Double pot system', value: 'Two separate inner pots for different dishes and easier cleaning.' }, { label: 'Inner coating', value: 'Ceramic marble non-stick surface with scratch resistance.' }, { label: 'Cooking uses', value: 'Suitable for hotpot, boiling, frying, rice, and curry.' }, { label: 'Safety and build', value: 'Tempered metal body, metal thermofuse protection, and tempered glass lid with steam vent.' }], image: catalogImages.miyakoMc400tMain, gallery: [catalogImages.miyakoMc400tMain, catalogImages.miyakoMc400tBox], fit: 'contain' },
   { name: 'Infrared Cooker', category: 'kitchen', label: 'Kitchen', price: '৳3,350', tag: 'POPULAR', description: 'Versatile glass-top cooker for quick meals and easy clean-up.', image: catalogImages.cooker },
   { name: 'Hotpot Cooker', category: 'kitchen', label: 'Kitchen', price: '৳2,490', tag: 'EASY MEALS', description: 'A handy electric pot for noodles, soup, tea, and small portions.', image: catalogImages.kitchen },
   { name: 'Roti Maker', category: 'kitchen', label: 'Kitchen', price: '৳2,290', tag: 'QUICK COOK', description: 'Makes soft flatbreads quickly for a simpler breakfast or dinner.', image: catalogImages.kitchen },
@@ -112,6 +123,10 @@ const catalogProducts = [
 
 const approvedProductNames = new Set([
   'Hawkins Black Berry Inverter Induction Cooker',
+  'Kemei 4-in-1 Professional Grooming Kit',
+  'VGR Professional Hair Clipper',
+  'Miyako Cordless Electric Kettle',
+  'Miyako Multi 2 Pot Cooker (Rice & Curry)',
   'Miyako Multi Cooker (Rice & Curry)',
   'Panasonic Pro 3 in 1 Mixer Grinder',
   'Novena Inverter Air Fryer',
