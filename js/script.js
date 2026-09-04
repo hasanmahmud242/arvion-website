@@ -52,11 +52,12 @@ const catalogImages = {
   grooming: 'https://images.unsplash.com/photo-1522338140505-0c8892b07b09?auto=format&fit=crop&w=800&q=80',
   power: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80',
   coffee: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80',
-  lamp: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80'
+  lamp: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80',
+  hawkinsInduction: 'assets/hawkins-agi-883.jpg'
 };
 
 const products = [
-  { name: 'Induction Cooker', category: 'kitchen', label: 'Kitchen', price: '৳3,950', tag: 'NEW', description: 'Fast, even heat for everyday cooking with a compact countertop design.', image: catalogImages.cooker },
+  { name: 'Hawkins Black Berry Inverter Induction Cooker', brand: 'Hawkins Black Berry', model: 'AGI-883', category: 'kitchen', label: 'Kitchen', price: '৳3,400', tag: 'INVERTER', description: 'Touch controls, LED display, timer, lock, auto shut-off, overheat protection, and up to 85% energy saving.', image: catalogImages.hawkinsInduction, fit: 'contain' },
   { name: 'Infrared Cooker', category: 'kitchen', label: 'Kitchen', price: '৳3,350', tag: 'POPULAR', description: 'Versatile glass-top cooker for quick meals and easy clean-up.', image: catalogImages.cooker },
   { name: 'Hotpot Cooker', category: 'kitchen', label: 'Kitchen', price: '৳2,490', tag: 'EASY MEALS', description: 'A handy electric pot for noodles, soup, tea, and small portions.', image: catalogImages.kitchen },
   { name: 'Roti Maker', category: 'kitchen', label: 'Kitchen', price: '৳2,290', tag: 'QUICK COOK', description: 'Makes soft flatbreads quickly for a simpler breakfast or dinner.', image: catalogImages.kitchen },
@@ -100,7 +101,9 @@ const products = [
 function productMarkup(product) {
   const message = `Hello ${brandName}! I would like to order:\n\nProduct: ${product.name}\nPrice: ${product.price}\nQuantity: 1\n\nPlease tell me the delivery details, delivery charge, and payment options.`;
   const orderUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-  return `<div class="col-6 col-md-4 col-xl-3 product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><a href="${orderUrl}" class="product-image-wrap" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><img class="product-image" src="${product.image}" alt="${escapeHtml(product.name)}"><span class="product-tag">${product.tag}</span><span class="product-stock">Order on WhatsApp</span></a><div class="product-info"><span class="product-category">${product.label}</span><h3 class="product-title">${escapeHtml(product.name)}</h3><p class="product-description">${escapeHtml(product.description)}</p><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
+  const brandModel = product.brand ? `<p class="product-model">${escapeHtml(product.brand)} · Model ${escapeHtml(product.model)}</p>` : '';
+  const imageClass = product.fit === 'contain' ? ' product-image-contain' : '';
+  return `<div class="col-6 col-md-4 col-xl-3 product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><a href="${orderUrl}" class="product-image-wrap" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><img class="product-image${imageClass}" src="${product.image}" alt="${escapeHtml(product.name)}"><span class="product-tag">${product.tag}</span><span class="product-stock">Order on WhatsApp</span></a><div class="product-info"><span class="product-category">${product.label}</span>${brandModel}<h3 class="product-title">${escapeHtml(product.name)}</h3><p class="product-description">${escapeHtml(product.description)}</p><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
 }
 
 function renderProducts() {
