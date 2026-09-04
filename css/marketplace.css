@@ -124,7 +124,7 @@
   .marketplace-categories { align-items:stretch; flex-direction:column; gap:0; margin-top:.2rem; padding:.5rem 0 1rem; }
   .marketplace-categories a { border-bottom:1px solid var(--line); padding:.72rem .1rem; }
   .marketplace-categories .category-all { background:transparent; border-radius:0; }
-  .shop-section { padding-top:2.25rem; }
+  .shop-section { padding-top:0; }
   .filter-bar { gap:.45rem; margin-bottom:1.5rem; }
   .filter-button { font-size:.72rem; padding:.48rem .65rem; }
   .shop-count { margin-left:0; padding-top:.25rem; width:100%; }
