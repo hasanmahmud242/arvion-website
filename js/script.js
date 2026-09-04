@@ -80,7 +80,8 @@ const catalogImages = {
   vintageT9Main: 'assets/vintage-t9-main.png',
   vintageT9Box: 'assets/vintage-t9-box.png',
   htcAt522Main: 'assets/htc-at-522-main.png',
-  htcAt522Box: 'assets/htc-at-522-box.png'
+  htcAt522Box: 'assets/htc-at-522-box.png',
+  prestigeEb7002Main: 'assets/prestige-eb-7002-main.png'
 };
 
 const catalogProducts = [
@@ -93,6 +94,7 @@ const catalogProducts = [
   { name: 'VGR Professional Hair Trimmer V-987', brand: 'VGR (Voyager Series)', model: 'V-987', category: 'personal', label: 'Personal care', price: '৳1,200', tag: '7000 RPM', description: 'Turbo hair trimmer with 2000 mAh battery, Type-C charging, and digital dashboard.', details: [{ label: 'Model', value: 'V-987' }, { label: 'Battery', value: '2000 mAh lithium battery with up to 400 minutes of continuous runtime.' }, { label: 'Turbo mode', value: '7000 RPM mode adds extra power for dense hair.' }, { label: 'Display', value: 'Digital LED dashboard shows exact battery percentage and status.' }, { label: 'Operation', value: 'Corded or cordless use with USB Type-C charging.' }, { label: 'Blades', value: 'Precision stainless steel T-blade for zero-gap detailing and sharp line-ups.' }, { label: 'Design', value: 'Dark metallic textured grip with built-in travel lock.' }], image: catalogImages.vgrV987Main, gallery: [catalogImages.vgrV987Main, catalogImages.vgrV987Box], fit: 'contain' },
   { name: 'Vintage T9 Hair & Beard Trimmer', brand: 'Vintage', model: 'Vintage T9', category: 'personal', label: 'Personal care', price: '৳350', tag: 'METAL BODY', description: 'Compact engraved metal T-blade trimmer for precise hair and beard detailing.', details: [{ label: 'Model', value: 'Vintage T9' }, { label: 'Body', value: 'Full metal bronze-finished body with a detailed carved dragon design.' }, { label: 'Blades', value: 'Exposed zero-gap stainless steel hanging T-blade for detailing, line-ups, and hair carving.' }, { label: 'Battery', value: 'Rechargeable lithium-ion battery with up to 120 minutes of runtime.' }, { label: 'Safety', value: 'R-shaped blade edge helps reduce skin irritation and accidental cuts.' }, { label: 'Design', value: 'Slim portable cylindrical handle with a bottom power switch.' }], image: catalogImages.vintageT9Main, gallery: [catalogImages.vintageT9Main, catalogImages.vintageT9Box], fit: 'contain' },
   { name: 'HTC Rechargeable Hair & Beard Trimmer', brand: 'HTC', model: 'AT-522', category: 'personal', label: 'Personal care', price: '৳500', tag: 'LOW NOISE', description: 'Rechargeable trimmer with adjustable cutting length and a lightweight ergonomic body.', details: [{ label: 'Model', value: 'AT-522' }, { label: 'Battery', value: 'Cordless rechargeable design with about 45–60 minutes of continuous grooming.' }, { label: 'Cutting length', value: 'Slide-up guide comb allows quick length adjustments without swapping attachment combs.' }, { label: 'Blades', value: 'High-grade stainless steel cutter head for snag-free trimming and detailing.' }, { label: 'Design', value: 'Lightweight curved body with a textured blue power switch.' }, { label: 'Operation', value: 'Low-noise motor helps reduce vibration and operating noise.' }], image: catalogImages.htcAt522Main, gallery: [catalogImages.htcAt522Main, catalogImages.htcAt522Box], fit: 'contain' },
+  { name: 'Prestige Electric Hand Mixer', brand: 'Prestige', model: 'EB-7002', category: 'kitchen', label: 'Kitchen', price: '৳1,200', tag: '800 W', description: 'Powerful 800 W hand mixer with 5 speed settings for whipping, beating, and mixing.', details: [{ label: 'Model', value: 'EB-7002' }, { label: 'Power rating', value: '800 W powerful motor.' }, { label: 'Speed settings', value: 'Five speed settings for flexible blending, whipping, and mixing.' }, { label: 'Ergonomic design', value: 'Lightweight comfortable-grip body for easy control during longer baking sessions.' }, { label: 'Finish', value: 'Modern brushed stainless steel housing with black accent trims.' }, { label: 'Uses', value: 'Suitable for whipping cream, beating eggs, mixing batter, and light dough preparation.' }], image: catalogImages.prestigeEb7002Main, gallery: [catalogImages.prestigeEb7002Main], fit: 'contain' },
   { name: 'Infrared Cooker', category: 'kitchen', label: 'Kitchen', price: '৳3,350', tag: 'POPULAR', description: 'Versatile glass-top cooker for quick meals and easy clean-up.', image: catalogImages.cooker },
   { name: 'Hotpot Cooker', category: 'kitchen', label: 'Kitchen', price: '৳2,490', tag: 'EASY MEALS', description: 'A handy electric pot for noodles, soup, tea, and small portions.', image: catalogImages.kitchen },
   { name: 'Roti Maker', category: 'kitchen', label: 'Kitchen', price: '৳2,290', tag: 'QUICK COOK', description: 'Makes soft flatbreads quickly for a simpler breakfast or dinner.', image: catalogImages.kitchen },
@@ -143,6 +145,7 @@ const approvedProductNames = new Set([
   'VGR Professional Hair Trimmer V-987',
   'Vintage T9 Hair & Beard Trimmer',
   'HTC Rechargeable Hair & Beard Trimmer',
+  'Prestige Electric Hand Mixer',
   'Miyako Multi Cooker (Rice & Curry)',
   'Panasonic Pro 3 in 1 Mixer Grinder',
   'Novena Inverter Air Fryer',
