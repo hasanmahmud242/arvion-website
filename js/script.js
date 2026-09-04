@@ -66,7 +66,7 @@ const catalogImages = {
   miyakoHandMixerBox: 'assets/miyako-hm-6679-c4-box.png'
 };
 
-const products = [
+const catalogProducts = [
   { name: 'Hawkins Black Berry Inverter Induction Cooker', brand: 'Hawkins Black Berry', model: 'AGI-883', category: 'kitchen', label: 'Kitchen', price: '৳3,400', tag: 'INVERTER', description: 'Touch controls, LED display, timer, lock, auto shut-off, overheat protection, and up to 85% energy saving.', details: [{ label: 'Model', value: 'AGI-883' }, { label: 'Inverter technology', value: 'Power-saving cooking that can reduce electricity use by up to 85%.' }, { label: 'Controls', value: 'Smart touch sensor controls with a clear digital LED display.' }, { label: 'Cooking features', value: 'Built-in functions, power adjustment, lock function, and preset timer control.' }, { label: 'Glass surface', value: 'High-temperature resistant crystal glass plate with floral artwork.' }, { label: 'Safety', value: 'Built-in overheat protection and automatic shut-off.' }], image: catalogImages.hawkinsInductionDisplay, gallery: [catalogImages.hawkinsInductionDisplay, catalogImages.hawkinsInductionGallery], fit: 'contain' },
   { name: 'Infrared Cooker', category: 'kitchen', label: 'Kitchen', price: '৳3,350', tag: 'POPULAR', description: 'Versatile glass-top cooker for quick meals and easy clean-up.', image: catalogImages.cooker },
   { name: 'Hotpot Cooker', category: 'kitchen', label: 'Kitchen', price: '৳2,490', tag: 'EASY MEALS', description: 'A handy electric pot for noodles, soup, tea, and small portions.', image: catalogImages.kitchen },
@@ -107,6 +107,15 @@ const products = [
   { name: 'Hair Clipper', category: 'personal', label: 'Personal care', price: '৳2,150', tag: 'HOME CUT', description: 'Cordless clipper set for neat haircuts and simple maintenance.', image: catalogImages.grooming },
   { name: 'Fabric Lint Remover', category: 'home', label: 'Home care', price: '৳850', tag: 'CARE', description: 'Refresh sweaters and fabrics by removing loose lint and fuzz.', image: catalogImages.home }
 ];
+
+const approvedProductNames = new Set([
+  'Hawkins Black Berry Inverter Induction Cooker',
+  'Miyako Multi Cooker (Rice & Curry)',
+  'Panasonic Pro 3 in 1 Mixer Grinder',
+  'Novena Inverter Air Fryer',
+  'Miyako Hand Mixer / Egg Beater'
+]);
+const products = catalogProducts.filter(product => approvedProductNames.has(product.name));
 
 function orderUrlFor(product) {
   const message = `Hello ${brandName}! I would like to order:\n\nProduct: ${product.name}\nPrice: ${product.price}\nQuantity: 1\n\nPlease tell me the delivery details, delivery charge, and payment options.`;
