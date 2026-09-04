@@ -99,19 +99,20 @@ const products = [
   { name: 'Fabric Lint Remover', category: 'home', label: 'Home care', price: '৳850', tag: 'CARE', description: 'Refresh sweaters and fabrics by removing loose lint and fuzz.', image: catalogImages.home }
 ];
 
-function productMarkup(product, index) {
+function productMarkup(product, index, compactListing = false) {
   const message = `Hello ${brandName}! I would like to order:\n\nProduct: ${product.name}\nPrice: ${product.price}\nQuantity: 1\n\nPlease tell me the delivery details, delivery charge, and payment options.`;
   const orderUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   const brandModel = product.brand ? `<p class="product-model">${escapeHtml(product.brand)} · Model ${escapeHtml(product.model)}</p>` : '';
   const imageClass = product.fit === 'contain' ? ' product-image-contain' : '';
-  return `<div class="col-6 col-md-4 col-xl-3 product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><button class="product-image-wrap product-gallery-trigger" type="button" data-gallery-index="${index}" aria-label="View photos for ${escapeHtml(product.name)}" aria-haspopup="dialog"><img class="product-image${imageClass}" src="${product.image}" alt="${escapeHtml(product.name)}"><span class="product-tag">${product.tag}</span><span class="product-stock">View photos</span></button><div class="product-info"><span class="product-category">${product.label}</span>${brandModel}<h3 class="product-title">${escapeHtml(product.name)}</h3><p class="product-description">${escapeHtml(product.description)}</p><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
+  const columnClass = compactListing ? 'col-6 col-md-4 col-lg-3 col-xxl-2' : 'col-6 col-md-4 col-xl-3';
+  return `<div class="${columnClass} product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><button class="product-image-wrap product-gallery-trigger" type="button" data-gallery-index="${index}" aria-label="View photos for ${escapeHtml(product.name)}" aria-haspopup="dialog"><img class="product-image${imageClass}" src="${product.image}" alt="${escapeHtml(product.name)}"><span class="product-tag">${product.tag}</span><span class="product-stock">View photos</span></button><div class="product-info"><span class="product-category">${product.label}</span>${brandModel}<h3 class="product-title">${escapeHtml(product.name)}</h3><p class="product-description">${escapeHtml(product.description)}</p><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
 }
 
 function renderProducts() {
   const featured = document.querySelector('#featuredProducts');
   const shop = document.querySelector('#shopProducts');
   if (featured) featured.innerHTML = products.slice(0, 4).map((product, index) => productMarkup(product, index)).join('');
-  if (shop) shop.innerHTML = products.map((product, index) => productMarkup(product, index)).join('');
+  if (shop) shop.innerHTML = products.map((product, index) => productMarkup(product, index, true)).join('');
 }
 
 function setupProductGallery() {
