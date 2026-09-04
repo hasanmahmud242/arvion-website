@@ -58,7 +58,7 @@ const catalogImages = {
 };
 
 const products = [
-  { name: 'Hawkins Black Berry Inverter Induction Cooker', brand: 'Hawkins Black Berry', model: 'AGI-883', category: 'kitchen', label: 'Kitchen', price: '৳3,400', tag: 'INVERTER', description: 'Touch controls, LED display, timer, lock, auto shut-off, overheat protection, and up to 85% energy saving.', image: catalogImages.hawkinsInductionDisplay, gallery: [catalogImages.hawkinsInductionDisplay, catalogImages.hawkinsInductionGallery], fit: 'contain' },
+  { name: 'Hawkins Black Berry Inverter Induction Cooker', brand: 'Hawkins Black Berry', model: 'AGI-883', category: 'kitchen', label: 'Kitchen', price: '৳3,400', tag: 'INVERTER', description: 'Touch controls, LED display, timer, lock, auto shut-off, overheat protection, and up to 85% energy saving.', details: [{ label: 'Model', value: 'AGI-883' }, { label: 'Inverter technology', value: 'Power-saving cooking that can reduce electricity use by up to 85%.' }, { label: 'Controls', value: 'Smart touch sensor controls with a clear digital LED display.' }, { label: 'Cooking features', value: 'Built-in functions, power adjustment, lock function, and preset timer control.' }, { label: 'Glass surface', value: 'High-temperature resistant crystal glass plate with floral artwork.' }, { label: 'Safety', value: 'Built-in overheat protection and automatic shut-off.' }], image: catalogImages.hawkinsInductionDisplay, gallery: [catalogImages.hawkinsInductionDisplay, catalogImages.hawkinsInductionGallery], fit: 'contain' },
   { name: 'Infrared Cooker', category: 'kitchen', label: 'Kitchen', price: '৳3,350', tag: 'POPULAR', description: 'Versatile glass-top cooker for quick meals and easy clean-up.', image: catalogImages.cooker },
   { name: 'Hotpot Cooker', category: 'kitchen', label: 'Kitchen', price: '৳2,490', tag: 'EASY MEALS', description: 'A handy electric pot for noodles, soup, tea, and small portions.', image: catalogImages.kitchen },
   { name: 'Roti Maker', category: 'kitchen', label: 'Kitchen', price: '৳2,290', tag: 'QUICK COOK', description: 'Makes soft flatbreads quickly for a simpler breakfast or dinner.', image: catalogImages.kitchen },
@@ -99,13 +99,17 @@ const products = [
   { name: 'Fabric Lint Remover', category: 'home', label: 'Home care', price: '৳850', tag: 'CARE', description: 'Refresh sweaters and fabrics by removing loose lint and fuzz.', image: catalogImages.home }
 ];
 
-function productMarkup(product, index, compactListing = false) {
+function orderUrlFor(product) {
   const message = `Hello ${brandName}! I would like to order:\n\nProduct: ${product.name}\nPrice: ${product.price}\nQuantity: 1\n\nPlease tell me the delivery details, delivery charge, and payment options.`;
-  const orderUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+}
+
+function productMarkup(product, index, compactListing = false) {
+  const orderUrl = orderUrlFor(product);
   const brandModel = product.brand ? `<p class="product-model">${escapeHtml(product.brand)} · Model ${escapeHtml(product.model)}</p>` : '';
   const imageClass = product.fit === 'contain' ? ' product-image-contain' : '';
   const columnClass = compactListing ? 'col-6 col-md-4 col-lg-3 col-xxl-2' : 'col-6 col-md-4 col-xl-3';
-  return `<div class="${columnClass} product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><button class="product-image-wrap product-gallery-trigger" type="button" data-gallery-index="${index}" aria-label="View photos for ${escapeHtml(product.name)}" aria-haspopup="dialog"><img class="product-image${imageClass}" src="${product.image}" alt="${escapeHtml(product.name)}"><span class="product-tag">${product.tag}</span><span class="product-stock">View photos</span></button><div class="product-info"><span class="product-category">${product.label}</span>${brandModel}<h3 class="product-title">${escapeHtml(product.name)}</h3><p class="product-description">${escapeHtml(product.description)}</p><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
+  return `<div class="${columnClass} product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><button class="product-image-wrap product-gallery-trigger" type="button" data-gallery-index="${index}" aria-label="View photos for ${escapeHtml(product.name)}" aria-haspopup="dialog"><img class="product-image${imageClass}" src="${product.image}" alt="${escapeHtml(product.name)}"><span class="product-tag">${product.tag}</span><span class="product-stock">View photos</span></button><div class="product-info"><span class="product-category">${product.label}</span>${brandModel}<h3 class="product-title">${escapeHtml(product.name)}</h3><p class="product-description">${escapeHtml(product.description)}</p><div class="product-bottom"><span class="product-price">${product.price}</span><div class="product-actions"><button class="market-details" type="button" data-details-index="${index}" aria-label="View details for ${escapeHtml(product.name)}" aria-haspopup="dialog">DETAILS</button><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></div></article></div>`;
 }
 
 function renderProducts() {
@@ -147,6 +151,36 @@ function setupProductGallery() {
       if (!thumbnail) return;
       selectImage(images, product.name, Number(thumbnail.dataset.galleryImage));
     };
+  }));
+}
+
+function setupProductDetails() {
+  const triggers = document.querySelectorAll('[data-details-index]');
+  if (!triggers.length || !window.bootstrap) return;
+
+  let modalElement = document.querySelector('#productDetailsModal');
+  if (!modalElement) {
+    document.body.insertAdjacentHTML('beforeend', '<div class="modal fade" id="productDetailsModal" tabindex="-1" aria-labelledby="productDetailsTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content product-details-modal"><div class="modal-header"><div><p class="details-kicker">PRODUCT DETAILS</p><h2 class="modal-title" id="productDetailsTitle"></h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close product details"></button></div><div class="modal-body"><div class="details-list" id="productDetailsList"></div></div><div class="modal-footer"><button type="button" class="details-close" data-bs-dismiss="modal">Close</button><a class="market-add" id="productDetailsOrder" href="" target="_blank" rel="noopener"><span>ORDER ON WHATSAPP</span><span>↗</span></a></div></div></div></div>');
+    modalElement = document.querySelector('#productDetailsModal');
+  }
+
+  const modal = window.bootstrap.Modal.getOrCreateInstance(modalElement);
+  const title = modalElement.querySelector('#productDetailsTitle');
+  const list = modalElement.querySelector('#productDetailsList');
+  const orderLink = modalElement.querySelector('#productDetailsOrder');
+  triggers.forEach(trigger => trigger.addEventListener('click', () => {
+    const product = products[Number(trigger.dataset.detailsIndex)];
+    if (!product) return;
+    const details = product.details || [
+      { label: 'Category', value: product.label },
+      { label: 'Price', value: product.price },
+      { label: 'About this product', value: product.description },
+      { label: 'Stock confirmation', value: 'Ask us on WhatsApp to confirm current availability before ordering.' }
+    ];
+    title.textContent = product.name;
+    list.innerHTML = details.map(detail => `<div class="details-item"><h3>${escapeHtml(detail.label)}</h3><p>${escapeHtml(detail.value)}</p></div>`).join('');
+    orderLink.href = orderUrlFor(product);
+    modal.show();
   }));
 }
 
@@ -193,6 +227,7 @@ applyBranding();
 buildMarketplaceHeader();
 renderProducts();
 setupProductGallery();
+setupProductDetails();
 setupFilters();
 setupSiteSearch();
 setupForms();
