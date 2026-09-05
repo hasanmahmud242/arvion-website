@@ -11,8 +11,12 @@ function applyBranding() {
   document.querySelectorAll('meta[name="description"]').forEach(meta => {
     meta.content = meta.content.replace(/ARVION/gi, brandName);
   });
-  document.querySelectorAll('.navbar-brand, .footer-brand').forEach(brand => {
+  document.querySelectorAll('.navbar-brand').forEach(brand => {
     brand.textContent = brandName;
+  });
+  document.querySelectorAll('.footer-brand').forEach(brand => {
+    brand.innerHTML = '<img src="assets/tusorova-logo-light.png" alt="TUSOROVA" width="200" height="100">';
+    brand.setAttribute('aria-label', `${brandName} home`);
   });
   const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const textNodes = [];
@@ -41,7 +45,7 @@ function buildMarketplaceHeader() {
   const nav = document.querySelector('.site-nav');
   if (!nav) return;
   const currentSearch = new URLSearchParams(window.location.search).get('search') || '';
-  nav.innerHTML = `<div class="container marketplace-header"><div class="marketplace-main"><a class="navbar-brand" href="index.html" aria-label="${brandName} home"><img src="assets/tusorova-mark.svg" alt="" width="36" height="36"><span>${brandName}</span></a><form class="marketplace-search" role="search"><label class="visually-hidden" for="siteSearch">Search TUSOROVA products</label><input id="siteSearch" type="search" value="${escapeHtml(currentSearch)}" placeholder="Search cookers, kettles, blenders and more" autocomplete="off"><button type="submit" aria-label="Search products">⌕</button></form><div class="marketplace-actions"><a class="account-link" href="contact.html"><span>Need help?</span><b>Support</b></a><a class="marketplace-whatsapp" href="${whatsappUrl(whatsappGreeting)}" target="_blank" rel="noopener" aria-label="Chat with ${brandName} on WhatsApp"><img src="assets/whatsapp-chat.svg" alt=""><b>${brandName}</b></a></div><button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Open navigation"><span class="navbar-toggler-icon"></span></button></div><div class="collapse navbar-collapse" id="mainNav"><div class="marketplace-categories"><a class="category-all" href="products.html">☰ <span>All products</span></a><a href="products.html?category=kitchen">Kitchen essentials</a><a href="products.html?category=home">Home care</a><a href="products.html?category=power">Power & utility</a><a href="products.html?category=personal">Personal care</a><a href="products.html">New arrivals</a><a href="products.html#shopProducts">Deals</a><a href="products.html#orderGuide">Order guide</a><a href="about.html">Our story</a><a href="contact.html">Support</a></div></div></div>`;
+  nav.innerHTML = `<div class="container marketplace-header"><div class="marketplace-main"><a class="navbar-brand site-logo-link" href="index.html" aria-label="${brandName} home"><img src="assets/tusorova-logo-light.png" alt="TUSOROVA" width="156" height="64"></a><form class="marketplace-search" role="search"><label class="visually-hidden" for="siteSearch">Search TUSOROVA products</label><input id="siteSearch" type="search" value="${escapeHtml(currentSearch)}" placeholder="Search cookers, kettles, blenders and more" autocomplete="off"><button type="submit" aria-label="Search products">⌕</button></form><div class="marketplace-actions"><a class="account-link" href="contact.html"><span>Need help?</span><b>Support</b></a><a class="marketplace-whatsapp" href="${whatsappUrl(whatsappGreeting)}" target="_blank" rel="noopener" aria-label="Chat with ${brandName} on WhatsApp"><img src="assets/whatsapp-chat.svg" alt=""><b>${brandName}</b></a></div><button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Open navigation"><span class="navbar-toggler-icon"></span></button></div><div class="collapse navbar-collapse" id="mainNav"><div class="marketplace-categories"><a class="category-all" href="products.html">☰ <span>All products</span></a><a href="products.html?category=kitchen">Kitchen essentials</a><a href="products.html?category=home">Home care</a><a href="products.html?category=power">Power & utility</a><a href="products.html?category=personal">Personal care</a><a href="products.html">New arrivals</a><a href="products.html#shopProducts">Deals</a><a href="products.html#orderGuide">Order guide</a><a href="about.html">Our story</a><a href="contact.html">Support</a></div></div></div>`;
 }
 
 const catalogImages = {
