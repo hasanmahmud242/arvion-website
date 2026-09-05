@@ -226,9 +226,9 @@ function orderUrlFor(product) {
 
 function productMarkup(product, index, compactListing = false) {
   const orderUrl = orderUrlFor(product);
-  const imageClass = product.fit === 'contain' ? ' product-image-contain' : '';
   const columnClass = compactListing ? 'col-6 col-md-4 col-lg-3 col-xxl-2' : 'col-6 col-md-4 col-xl-3';
-  return `<div class="${columnClass} product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><button class="product-image-wrap product-gallery-trigger" type="button" data-gallery-index="${index}" aria-label="View photos for ${escapeHtml(product.name)}" aria-haspopup="dialog"><img class="product-image${imageClass}" src="${product.image}" alt="${escapeHtml(product.name)}"><span class="product-tag">${product.tag}</span><span class="product-stock">View photos</span></button><div class="product-info"><h3 class="product-title"><button class="product-title-button market-details" type="button" data-details-index="${index}" aria-label="View details for ${escapeHtml(product.name)}" aria-haspopup="dialog">${escapeHtml(product.name)}</button></h3><div class="product-bottom"><span class="product-price">${product.price}</span><div class="product-actions"><button class="market-details" type="button" data-details-index="${index}" aria-label="View details for ${escapeHtml(product.name)}" aria-haspopup="dialog">DETAILS</button><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></div></article></div>`;
+  const detailsId = `product-inline-details-${index}`;
+  return `<div class="${columnClass} product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><button class="product-image-wrap product-details-trigger" type="button" data-details-index="${index}" aria-controls="${detailsId}" aria-expanded="false" aria-label="View details for ${escapeHtml(product.name)}"><img class="product-image" src="${product.image}" alt="${escapeHtml(product.name)}"></button><section class="product-inline-details" id="${detailsId}" hidden aria-live="polite"></section><div class="product-info"><h3 class="product-title"><button class="product-title-button product-details-trigger" type="button" data-details-index="${index}" aria-controls="${detailsId}" aria-expanded="false">${escapeHtml(product.name)}</button></h3><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
 }
 
 function renderProducts() {
@@ -238,74 +238,37 @@ function renderProducts() {
   if (shop) shop.innerHTML = products.map((product, index) => productMarkup(product, index, true)).join('');
 }
 
-function setupProductGallery() {
-  const triggers = document.querySelectorAll('.product-gallery-trigger');
-  if (!triggers.length || !window.bootstrap) return;
-
-  let modalElement = document.querySelector('#productGalleryModal');
-  if (!modalElement) {
-    document.body.insertAdjacentHTML('beforeend', '<div class="modal fade" id="productGalleryModal" tabindex="-1" aria-labelledby="productGalleryTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content product-gallery-modal"><div class="modal-header"><div><p class="gallery-kicker">PRODUCT PHOTOS</p><h2 class="modal-title" id="productGalleryTitle"></h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close photo gallery"></button></div><div class="modal-body"><img class="gallery-main-image" id="galleryMainImage" src="" alt=""><div class="gallery-thumbnails" id="galleryThumbnails"></div></div></div></div></div>');
-    modalElement = document.querySelector('#productGalleryModal');
-  }
-
-  const modal = window.bootstrap.Modal.getOrCreateInstance(modalElement);
-  const title = modalElement.querySelector('#productGalleryTitle');
-  const mainImage = modalElement.querySelector('#galleryMainImage');
-  const thumbnails = modalElement.querySelector('#galleryThumbnails');
-  const selectImage = (images, productName, selectedIndex) => {
-    mainImage.src = images[selectedIndex];
-    mainImage.alt = `${productName} — photo ${selectedIndex + 1}`;
-    thumbnails.innerHTML = images.map((image, imageIndex) => `<button class="gallery-thumbnail${imageIndex === selectedIndex ? ' active' : ''}" type="button" data-gallery-image="${imageIndex}" aria-label="View photo ${imageIndex + 1} of ${escapeHtml(productName)}"${imageIndex === selectedIndex ? ' aria-current="true"' : ''}><img src="${image}" alt=""></button>`).join('');
-  };
-
-  triggers.forEach(trigger => trigger.addEventListener('click', () => {
-    const product = products[Number(trigger.dataset.galleryIndex)];
-    if (!product) return;
-    const images = product.gallery || [product.image];
-    title.textContent = product.name;
-    selectImage(images, product.name, 0);
-    modal.show();
-    thumbnails.onclick = event => {
-      const thumbnail = event.target.closest('[data-gallery-image]');
-      if (!thumbnail) return;
-      selectImage(images, product.name, Number(thumbnail.dataset.galleryImage));
-    };
-  }));
+function productDetailsMarkup(product) {
+  const overview = [
+    product.brand && { label: 'Brand', value: product.brand },
+    product.model && { label: 'Model', value: product.model },
+    product.description && { label: 'Description', value: product.description }
+  ].filter(Boolean);
+  const specifications = product.details || [
+    { label: 'Category', value: product.label },
+    { label: 'Price', value: product.price },
+    { label: 'About this product', value: product.description }
+  ];
+  const details = [...overview, ...specifications.filter(detail => !['brand', 'model', 'description', 'about this product'].includes(detail.label.toLowerCase()))];
+  return `<p class="inline-details-kicker">PRODUCT DETAILS</p><div class="details-list">${details.map(detail => `<div class="details-item"><h3>${escapeHtml(detail.label)}</h3><p>${escapeHtml(detail.value)}</p></div>`).join('')}</div>`;
 }
 
 function setupProductDetails() {
   const triggers = document.querySelectorAll('[data-details-index]');
-  if (!triggers.length || !window.bootstrap) return;
+  if (!triggers.length) return;
 
-  let modalElement = document.querySelector('#productDetailsModal');
-  if (!modalElement) {
-    document.body.insertAdjacentHTML('beforeend', '<div class="modal fade" id="productDetailsModal" tabindex="-1" aria-labelledby="productDetailsTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content product-details-modal"><div class="modal-header"><div><p class="details-kicker">PRODUCT DETAILS</p><h2 class="modal-title" id="productDetailsTitle"></h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close product details"></button></div><div class="modal-body"><div class="details-list" id="productDetailsList"></div></div><div class="modal-footer"><button type="button" class="details-close" data-bs-dismiss="modal">Close</button><a class="market-add" id="productDetailsOrder" href="" target="_blank" rel="noopener"><span>ORDER ON WHATSAPP</span><span>↗</span></a></div></div></div></div>');
-    modalElement = document.querySelector('#productDetailsModal');
-  }
-
-  const modal = window.bootstrap.Modal.getOrCreateInstance(modalElement);
-  const title = modalElement.querySelector('#productDetailsTitle');
-  const list = modalElement.querySelector('#productDetailsList');
-  const orderLink = modalElement.querySelector('#productDetailsOrder');
   triggers.forEach(trigger => trigger.addEventListener('click', () => {
-    const product = products[Number(trigger.dataset.detailsIndex)];
-    if (!product) return;
-    const overview = [
-      product.brand && { label: 'Brand', value: product.brand },
-      product.model && { label: 'Model', value: product.model },
-      product.description && { label: 'Description', value: product.description }
-    ].filter(Boolean);
-    const specifications = product.details || [
-      { label: 'Category', value: product.label },
-      { label: 'Price', value: product.price },
-      { label: 'About this product', value: product.description },
-      { label: 'Stock confirmation', value: 'Ask us on WhatsApp to confirm current availability before ordering.' }
-    ];
-    const details = [...overview, ...specifications.filter(detail => !['brand', 'model', 'description', 'about this product'].includes(detail.label.toLowerCase()))];
-    title.textContent = product.name;
-    list.innerHTML = details.map(detail => `<div class="details-item"><h3>${escapeHtml(detail.label)}</h3><p>${escapeHtml(detail.value)}</p></div>`).join('');
-    orderLink.href = orderUrlFor(product);
-    modal.show();
+    const index = Number(trigger.dataset.detailsIndex);
+    const product = products[index];
+    const panel = document.querySelector(`#product-inline-details-${index}`);
+    if (!product || !panel) return;
+    const isOpen = !panel.hidden;
+    document.querySelectorAll('.product-inline-details').forEach(item => { item.hidden = true; });
+    document.querySelectorAll('[data-details-index]').forEach(item => { item.setAttribute('aria-expanded', 'false'); });
+    if (isOpen) return;
+    panel.innerHTML = productDetailsMarkup(product);
+    panel.hidden = false;
+    document.querySelectorAll(`[data-details-index="${index}"]`).forEach(item => { item.setAttribute('aria-expanded', 'true'); });
   }));
 }
 
@@ -351,7 +314,6 @@ function setupForms() {
 applyBranding();
 buildMarketplaceHeader();
 renderProducts();
-setupProductGallery();
 setupProductDetails();
 setupFilters();
 setupSiteSearch();
