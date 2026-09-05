@@ -224,11 +224,13 @@ function orderUrlFor(product) {
   return whatsappUrl(message);
 }
 
+const productUrlFor = index => `product.html?product=${index}`;
+
 function productMarkup(product, index, compactListing = false) {
   const orderUrl = orderUrlFor(product);
+  const productUrl = productUrlFor(index);
   const columnClass = compactListing ? 'col-6 col-md-4 col-lg-3 col-xxl-2' : 'col-6 col-md-4 col-xl-3';
-  const detailsId = `product-inline-details-${index}`;
-  return `<div class="${columnClass} product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><button class="product-image-wrap product-details-trigger" type="button" data-details-index="${index}" aria-controls="${detailsId}" aria-expanded="false" aria-label="View details for ${escapeHtml(product.name)}"><img class="product-image" src="${product.image}" alt="${escapeHtml(product.name)}"></button><section class="product-inline-details" id="${detailsId}" hidden aria-live="polite"></section><div class="product-info"><h3 class="product-title"><button class="product-title-button product-details-trigger" type="button" data-details-index="${index}" aria-controls="${detailsId}" aria-expanded="false">${escapeHtml(product.name)}</button></h3><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
+  return `<div class="${columnClass} product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><a class="product-image-wrap product-card-link" href="${productUrl}" aria-label="View ${escapeHtml(product.name)} details"><img class="product-image" src="${product.image}" alt="${escapeHtml(product.name)}"></a><div class="product-info"><h3 class="product-title"><a class="product-title-link" href="${productUrl}">${escapeHtml(product.name)}</a></h3><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
 }
 
 function renderProducts() {
@@ -250,25 +252,35 @@ function productDetailsMarkup(product) {
     { label: 'About this product', value: product.description }
   ];
   const details = [...overview, ...specifications.filter(detail => !['brand', 'model', 'description', 'about this product'].includes(detail.label.toLowerCase()))];
-  return `<p class="inline-details-kicker">PRODUCT DETAILS</p><div class="details-list">${details.map(detail => `<div class="details-item"><h3>${escapeHtml(detail.label)}</h3><p>${escapeHtml(detail.value)}</p></div>`).join('')}</div>`;
+  return details.map(detail => `<div class="details-item"><h3>${escapeHtml(detail.label)}</h3><p>${escapeHtml(detail.value)}</p></div>`).join('');
 }
 
-function setupProductDetails() {
-  const triggers = document.querySelectorAll('[data-details-index]');
-  if (!triggers.length) return;
+function renderProductPage() {
+  const container = document.querySelector('#productDetail');
+  if (!container) return;
 
-  triggers.forEach(trigger => trigger.addEventListener('click', () => {
-    const index = Number(trigger.dataset.detailsIndex);
-    const product = products[index];
-    const panel = document.querySelector(`#product-inline-details-${index}`);
-    if (!product || !panel) return;
-    const isOpen = !panel.hidden;
-    document.querySelectorAll('.product-inline-details').forEach(item => { item.hidden = true; });
-    document.querySelectorAll('[data-details-index]').forEach(item => { item.setAttribute('aria-expanded', 'false'); });
-    if (isOpen) return;
-    panel.innerHTML = productDetailsMarkup(product);
-    panel.hidden = false;
-    document.querySelectorAll(`[data-details-index="${index}"]`).forEach(item => { item.setAttribute('aria-expanded', 'true'); });
+  const requestedIndex = new URLSearchParams(window.location.search).get('product');
+  const index = requestedIndex === null ? Number.NaN : Number(requestedIndex);
+  const product = Number.isInteger(index) && index >= 0 ? products[index] : null;
+  if (!product) {
+    container.innerHTML = '<div class="product-page-empty"><h1>Product not found</h1><p>Please return to the shop and choose a product.</p><a class="market-add" href="products.html"><span>BACK TO SHOP</span><span>→</span></a></div>';
+    return;
+  }
+
+  const images = [...new Set(product.gallery && product.gallery.length ? product.gallery : [product.image])];
+  document.title = `${product.name} | ${brandName}`;
+  container.innerHTML = `<div class="container"><nav class="product-breadcrumb" aria-label="Breadcrumb"><a href="products.html">Shop</a><span>›</span><a href="products.html?category=${product.category}">${escapeHtml(product.label)}</a><span>›</span><span aria-current="page">${escapeHtml(product.name)}</span></nav><div class="row g-4 g-lg-5"><div class="col-lg-6"><section class="product-detail-gallery"><div class="product-detail-main-image"><img id="productDetailMainImage" src="${images[0]}" alt="${escapeHtml(product.name)}"></div>${images.length > 1 ? `<div class="product-detail-thumbnails" aria-label="More photos of ${escapeHtml(product.name)}">${images.map((image, imageIndex) => `<button class="product-detail-thumbnail${imageIndex === 0 ? ' active' : ''}" type="button" data-product-image="${imageIndex}" aria-label="Show photo ${imageIndex + 1}"${imageIndex === 0 ? ' aria-current="true"' : ''}><img src="${image}" alt=""></button>`).join('')}</div>` : ''}</section></div><div class="col-lg-6"><section class="product-detail-summary"><p class="product-detail-brand">${escapeHtml(product.brand || product.label)}</p><h1>${escapeHtml(product.name)}</h1>${product.model ? `<p class="product-detail-model">Model: ${escapeHtml(product.model)}</p>` : ''}<p class="product-detail-description">${escapeHtml(product.description)}</p><p class="product-detail-price">${product.price}</p><a class="product-detail-order" href="${orderUrlFor(product)}" target="_blank" rel="noopener"><span>ORDER ON WHATSAPP</span><span>↗</span></a><p class="product-detail-help">We will confirm stock, delivery charge, and payment details on WhatsApp.</p></section></div></div><section class="product-specifications"><h2>Product details</h2><div class="details-list">${productDetailsMarkup(product)}</div></section></div>`;
+
+  const mainImage = container.querySelector('#productDetailMainImage');
+  container.querySelectorAll('[data-product-image]').forEach(button => button.addEventListener('click', () => {
+    const imageIndex = Number(button.dataset.productImage);
+    mainImage.src = images[imageIndex];
+    mainImage.alt = `${product.name} — photo ${imageIndex + 1}`;
+    container.querySelectorAll('[data-product-image]').forEach(item => {
+      const active = item === button;
+      item.classList.toggle('active', active);
+      item.toggleAttribute('aria-current', active);
+    });
   }));
 }
 
@@ -314,7 +326,7 @@ function setupForms() {
 applyBranding();
 buildMarketplaceHeader();
 renderProducts();
-setupProductDetails();
+renderProductPage();
 setupFilters();
 setupSiteSearch();
 setupForms();
