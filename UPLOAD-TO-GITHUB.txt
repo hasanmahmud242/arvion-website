@@ -1,0 +1,41 @@
+TUSOROVA WEBSITE REDESIGN
+=========================
+
+This folder is ready for your existing GitHub Pages repository:
+https://github.com/hasanmahmud242/arvion-website
+
+Main improvements
+-----------------
+- TUSOROVA branding is now permanent (no ARVION JavaScript replacement).
+- Correct WhatsApp: +880 1987-510088
+- Correct phone: +880 1845-552350
+- Multi-category marketplace structure.
+- Current departments: Kitchen, Personal Care, Home, Electronics.
+- Future-ready departments: Shoes, Fashion, Beauty, Tools.
+- Redesigned homepage using real product images already in the project.
+- Cleaner product cards and product-detail pages.
+- Future-category "Coming soon" states.
+- Search and category filtering retained.
+- WhatsApp ordering retained and improved.
+- Contact form now opens a real prepared WhatsApp message.
+- Mobile-responsive navigation and product layout.
+- Updated About, Contact, footer, SEO titles/descriptions, sitemap.
+
+How to publish
+--------------
+OPTION A - easiest with your local project
+1. Make a backup of your current ARVION / arvion-website folder.
+2. Copy everything from this TUSOROVA-redesign folder into your existing repo folder.
+3. Replace files when Windows asks.
+4. Open PowerShell inside the repository.
+5. Run:
+
+   git add .
+   git commit -m "Redesign TUSOROVA marketplace"
+   git push origin main
+
+6. GitHub Pages will publish the updated files from your main branch.
+
+Important
+---------
+Do NOT copy another .git folder over your repository. This package intentionally does not include one.

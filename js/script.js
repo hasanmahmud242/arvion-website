@@ -1,52 +1,8 @@
 const brandName = 'TUSOROVA';
 const whatsappNumber = '8801987510088';
 const contactNumber = '8801845552350';
-const displayContactNumber = '+880 1845-552350';
-const whatsappGreeting = `আসসালামু আলাইকুম ${brandName}! আমি আপনাদের পণ্য সম্পর্কে জানতে চাই।`;
 const whatsappUrl = message => `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
-
-function applyBranding() {
-  document.title = document.title.replace(/ARVION/gi, brandName);
-  document.querySelectorAll('meta[name="description"]').forEach(meta => {
-    meta.content = meta.content.replace(/ARVION/gi, brandName);
-  });
-  document.querySelectorAll('.navbar-brand').forEach(brand => {
-    brand.textContent = brandName;
-  });
-  document.querySelectorAll('.footer-brand').forEach(brand => {
-    brand.innerHTML = '<img src="assets/tusorova-logo-straight.png" alt="TUSOROVA" width="220" height="94">';
-    brand.setAttribute('aria-label', `${brandName} home`);
-  });
-  const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  const textNodes = [];
-  while (textWalker.nextNode()) textNodes.push(textWalker.currentNode);
-  textNodes.forEach(node => {
-    node.nodeValue = node.nodeValue.replace(/ARVION/gi, brandName);
-  });
-  document.querySelectorAll('a[href*="ARVION"]').forEach(link => {
-    link.href = link.href.replace(/ARVION/g, brandName);
-  });
-  document.querySelectorAll('a[href*="wa.me/8801777887879"]').forEach(link => {
-    link.href = whatsappUrl(whatsappGreeting);
-  });
-  document.querySelectorAll('a[href^="tel:"]').forEach(link => {
-    link.href = `tel:${contactNumber}`;
-  });
-  const phoneWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  const phoneNodes = [];
-  while (phoneWalker.nextNode()) phoneNodes.push(phoneWalker.currentNode);
-  phoneNodes.forEach(node => {
-    node.nodeValue = node.nodeValue.replace(/\+880 1777-887879/g, displayContactNumber);
-  });
-}
-
-function buildMarketplaceHeader() {
-  const nav = document.querySelector('.site-nav');
-  if (!nav) return;
-  const currentSearch = new URLSearchParams(window.location.search).get('search') || '';
-  nav.innerHTML = `<div class="container marketplace-header"><div class="marketplace-main"><button class="catalog-menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Toggle product categories" aria-controls="mainNav"><span></span><span></span><span></span></button><a class="navbar-brand site-logo-link" href="index.html" aria-label="${brandName} home"><img src="assets/tusorova-logo-straight.png" alt="TUSOROVA" width="184" height="50"></a><form class="marketplace-search" role="search"><label class="visually-hidden" for="siteSearch">Search TUSOROVA products</label><input id="siteSearch" type="search" value="${escapeHtml(currentSearch)}" placeholder="Search products and categories" autocomplete="off"><button type="submit" aria-label="Search products">⌕</button></form><div class="marketplace-actions"><a class="account-link" href="contact.html"><span>Need help?</span><b>Support</b></a><a class="marketplace-whatsapp" href="${whatsappUrl(whatsappGreeting)}" target="_blank" rel="noopener" aria-label="Chat with ${brandName} on WhatsApp"><img src="assets/whatsapp-chat.svg" alt=""><b>${brandName}</b></a></div><button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Open navigation"><span class="navbar-toggler-icon"></span></button></div><div class="collapse navbar-collapse" id="mainNav"><div class="marketplace-categories"><a class="category-all" href="products.html">All products</a><a href="products.html?category=kitchen">Kitchen</a><a href="products.html?category=home">Home care</a><a href="products.html?category=power">Electronics</a><a href="products.html">Clothing</a><a href="products.html">Shoes</a><a href="products.html?category=personal">Beauty</a><a href="products.html?category=personal">Personal care</a><a href="products.html#shopProducts">Deals</a><a href="products.html#orderGuide">Order guide</a><a href="contact.html">Support</a></div></div></div>`;
-}
 
 const catalogImages = {
   cooker: 'https://images.unsplash.com/photo-1586208958839-06c17cacdf08?auto=format&fit=crop&w=800&q=80',
@@ -223,114 +179,158 @@ const approvedProductNames = new Set([
 ]);
 const products = catalogProducts.filter(product => approvedProductNames.has(product.name));
 
+const categoryNames = {
+  all: 'All products', kitchen: 'Kitchen', personal: 'Personal Care', home: 'Home', power: 'Electronics',
+  shoes: 'Shoes', fashion: 'Fashion', beauty: 'Beauty', tools: 'Tools'
+};
+const futureCategories = new Set(['shoes', 'fashion', 'beauty', 'tools']);
+
 function orderUrlFor(product) {
-  const message = `আসসালামু আলাইকুম ${brandName}!\n\nআমি এই পণ্যটি অর্ডার করতে চাই:\n\nপণ্যের নাম: ${product.name}\nদাম: ${product.price}\nপরিমাণ: ১টি\n\nদয়া করে পণ্যের স্টক, ডেলিভারি চার্জ এবং পেমেন্টের তথ্য জানাবেন।`;
+  const message = `Assalamu Alaikum ${brandName}!\n\nI would like to order this product:\n\nProduct: ${product.name}\nPrice: ${product.price}\nQuantity: 1\n\nPlease confirm stock, delivery charge and payment details.`;
   return whatsappUrl(message);
 }
 
 const productUrlFor = index => `product.html?product=${index}`;
 
-function productMarkup(product, index, compactListing = false) {
-  const orderUrl = orderUrlFor(product);
-  const productUrl = productUrlFor(index);
-  const columnClass = compactListing ? 'col-6 col-md-4 col-lg-3 col-xxl-2' : 'col-6 col-md-4 col-xl-3';
-  return `<div class="${columnClass} product-column" data-category="${product.category}" data-search="${product.name.toLowerCase()} ${product.label.toLowerCase()} ${product.tag.toLowerCase()} ${product.description.toLowerCase()}"><article class="product-card"><a class="product-image-wrap product-card-link" href="${productUrl}" aria-label="View ${escapeHtml(product.name)} details"><img class="product-image" src="${product.image}" alt="${escapeHtml(product.name)}"></a><div class="product-info"><h3 class="product-title"><a class="product-title-link" href="${productUrl}">${escapeHtml(product.name)}</a></h3><div class="product-bottom"><span class="product-price">${product.price}</span><a class="market-add" href="${orderUrl}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp"><span>ORDER</span><span>↗</span></a></div></div></article></div>`;
+function productMarkup(product, index, featured = false) {
+  const brand = product.brand || product.label;
+  return `<div class="${featured ? 'col-6 col-md-4 col-xl-3' : 'col-6 col-md-4 col-lg-3 col-xxl-2'} product-column" data-category="${escapeHtml(product.category)}" data-search="${escapeHtml(`${product.name} ${brand} ${product.model || ''} ${product.label}`.toLowerCase())}">
+    <article class="product-card">
+      <a class="product-image-wrap" href="${productUrlFor(index)}"><img class="product-image" src="${product.image}" alt="${escapeHtml(product.name)}" loading="lazy"><span class="product-badge">${escapeHtml(product.tag || product.label)}</span></a>
+      <div class="product-info"><p class="product-brand">${escapeHtml(brand)}</p><h3 class="product-title"><a href="${productUrlFor(index)}">${escapeHtml(product.name)}</a></h3>${product.model ? `<p class="product-model">Model ${escapeHtml(product.model)}</p>` : ''}<div class="product-bottom"><span class="product-price">${product.price}</span><a class="product-order" href="${orderUrlFor(product)}" target="_blank" rel="noopener" aria-label="Order ${escapeHtml(product.name)} on WhatsApp">Order <span>↗</span></a></div></div>
+    </article></div>`;
 }
 
 function renderProducts() {
   const featured = document.querySelector('#featuredProducts');
   const shop = document.querySelector('#shopProducts');
-  if (featured) featured.innerHTML = products.slice(0, 4).map((product, index) => productMarkup(product, index)).join('');
-  if (shop) shop.innerHTML = products.map((product, index) => productMarkup(product, index, true)).join('');
+  if (featured) featured.innerHTML = products.slice(0, 8).map((product, index) => productMarkup(product, index, true)).join('');
+  if (shop) shop.innerHTML = products.map((product, index) => productMarkup(product, index)).join('');
 }
 
-function productDetailsMarkup(product) {
-  const overview = [
+function detailsMarkup(product) {
+  const base = [
     product.brand && { label: 'Brand', value: product.brand },
     product.model && { label: 'Model', value: product.model },
-    product.description && { label: 'Description', value: product.description }
-  ].filter(Boolean);
-  const specifications = product.details || [
     { label: 'Category', value: product.label },
-    { label: 'Price', value: product.price },
-    { label: 'About this product', value: product.description }
-  ];
-  const details = [...overview, ...specifications.filter(detail => !['brand', 'model', 'description', 'about this product'].includes(detail.label.toLowerCase()))];
-  return details.map(detail => `<div class="details-item"><h3>${escapeHtml(detail.label)}</h3><p>${escapeHtml(detail.value)}</p></div>`).join('');
+    ...(product.details || [])
+  ].filter(Boolean);
+  const seen = new Set();
+  return base.filter(item => { const key = item.label.toLowerCase(); if (seen.has(key)) return false; seen.add(key); return true; })
+    .map(item => `<div class="spec-row"><dt>${escapeHtml(item.label)}</dt><dd>${escapeHtml(item.value)}</dd></div>`).join('');
+}
+
+function renderRelated(product, currentIndex) {
+  return products.map((item, index) => ({ item, index })).filter(({item, index}) => index !== currentIndex && item.category === product.category).slice(0, 4)
+    .map(({item, index}) => productMarkup(item, index, true)).join('');
 }
 
 function renderProductPage() {
   const container = document.querySelector('#productDetail');
   if (!container) return;
-
-  const requestedIndex = new URLSearchParams(window.location.search).get('product');
-  const index = requestedIndex === null ? Number.NaN : Number(requestedIndex);
-  const product = Number.isInteger(index) && index >= 0 ? products[index] : null;
+  const requested = Number(new URLSearchParams(location.search).get('product'));
+  const product = Number.isInteger(requested) && requested >= 0 ? products[requested] : null;
   if (!product) {
-    container.innerHTML = '<div class="product-page-empty"><h1>Product not found</h1><p>Please return to the shop and choose a product.</p><a class="market-add" href="products.html"><span>BACK TO SHOP</span><span>→</span></a></div>';
+    container.innerHTML = `<div class="container"><div class="product-not-found"><p class="eyebrow">NOT FOUND</p><h1>This product isn't available.</h1><a class="btn-primary-dark" href="products.html">Back to shop →</a></div></div>`;
     return;
   }
-
-  const images = [...new Set(product.gallery && product.gallery.length ? product.gallery : [product.image])];
+  const images = [...new Set((product.gallery && product.gallery.length ? product.gallery : [product.image]))];
   document.title = `${product.name} | ${brandName}`;
-  container.innerHTML = `<div class="container"><nav class="product-breadcrumb" aria-label="Breadcrumb"><a href="products.html">Shop</a><span>›</span><a href="products.html?category=${product.category}">${escapeHtml(product.label)}</a><span>›</span><span aria-current="page">${escapeHtml(product.name)}</span></nav><div class="row g-4 g-lg-5"><div class="col-lg-6"><section class="product-detail-gallery"><div class="product-detail-main-image"><img id="productDetailMainImage" src="${images[0]}" alt="${escapeHtml(product.name)}"></div>${images.length > 1 ? `<div class="product-detail-thumbnails" aria-label="More photos of ${escapeHtml(product.name)}">${images.map((image, imageIndex) => `<button class="product-detail-thumbnail${imageIndex === 0 ? ' active' : ''}" type="button" data-product-image="${imageIndex}" aria-label="Show photo ${imageIndex + 1}"${imageIndex === 0 ? ' aria-current="true"' : ''}><img src="${image}" alt=""></button>`).join('')}</div>` : ''}</section></div><div class="col-lg-6"><section class="product-detail-summary"><p class="product-detail-brand">${escapeHtml(product.brand || product.label)}</p><h1>${escapeHtml(product.name)}</h1>${product.model ? `<p class="product-detail-model">Model: ${escapeHtml(product.model)}</p>` : ''}<p class="product-detail-description">${escapeHtml(product.description)}</p><p class="product-detail-price">${product.price}</p><a class="product-detail-order" href="${orderUrlFor(product)}" target="_blank" rel="noopener"><span>ORDER ON WHATSAPP</span><span>↗</span></a><p class="product-detail-help">We will confirm stock, delivery charge, and payment details on WhatsApp.</p></section></div></div><section class="product-specifications"><h2>Product details</h2><div class="details-list">${productDetailsMarkup(product)}</div></section></div>`;
-
-  const mainImage = container.querySelector('#productDetailMainImage');
-  container.querySelectorAll('[data-product-image]').forEach(button => button.addEventListener('click', () => {
-    const imageIndex = Number(button.dataset.productImage);
-    mainImage.src = images[imageIndex];
-    mainImage.alt = `${product.name} — photo ${imageIndex + 1}`;
-    container.querySelectorAll('[data-product-image]').forEach(item => {
-      const active = item === button;
-      item.classList.toggle('active', active);
-      item.toggleAttribute('aria-current', active);
-    });
+  const related = renderRelated(product, requested);
+  container.innerHTML = `<div class="container"><nav class="breadcrumb-line"><a href="index.html">Home</a><span>/</span><a href="products.html">Shop</a><span>/</span><a href="products.html?category=${product.category}">${escapeHtml(product.label)}</a></nav>
+    <div class="product-detail-grid"><section class="product-gallery"><div class="main-product-image"><img id="mainProductImage" src="${images[0]}" alt="${escapeHtml(product.name)}"></div>${images.length > 1 ? `<div class="thumb-row">${images.map((img, i) => `<button type="button" class="thumb-btn${i===0?' active':''}" data-image-index="${i}"><img src="${img}" alt="Photo ${i+1} of ${escapeHtml(product.name)}"></button>`).join('')}</div>` : ''}</section>
+    <section class="product-summary"><div class="stock-row"><span class="in-stock">Available</span><span>${escapeHtml(product.label)}</span></div><p class="detail-brand">${escapeHtml(product.brand || product.label)}</p><h1>${escapeHtml(product.name)}</h1>${product.model ? `<p class="detail-model">Model: ${escapeHtml(product.model)}</p>` : ''}<p class="detail-description">${escapeHtml(product.description)}</p><div class="detail-price">${product.price}</div><a class="detail-order-btn" href="${orderUrlFor(product)}" target="_blank" rel="noopener"><img src="assets/whatsapp-chat.svg" alt=""> Order on WhatsApp</a><a class="detail-help-link" href="contact.html">Need help before ordering? Contact us →</a><div class="purchase-points"><div><b>Stock confirmation</b><span>We confirm availability on WhatsApp.</span></div><div><b>Delivery details</b><span>Delivery charge is confirmed before finalizing.</span></div><div><b>Payment</b><span>Cash, bKash or bank transfer after confirmation.</span></div></div></section></div>
+    <section class="product-info-section"><div class="product-info-intro"><p class="eyebrow">PRODUCT DETAILS</p><h2>Know what you're buying.</h2><p>Key model information and specifications provided for this product.</p></div><dl class="spec-list">${detailsMarkup(product)}</dl></section>
+    ${related ? `<section class="related-section"><div class="section-heading compact"><div><p class="eyebrow">RELATED PRODUCTS</p><h2>More from ${escapeHtml(product.label)}.</h2></div><a class="view-all" href="products.html?category=${product.category}">See all →</a></div><div class="row g-3 g-lg-4">${related}</div></section>` : ''}
+    </div>`;
+  const main = document.querySelector('#mainProductImage');
+  document.querySelectorAll('[data-image-index]').forEach(btn => btn.addEventListener('click', () => {
+    const i = Number(btn.dataset.imageIndex); main.src = images[i];
+    document.querySelectorAll('[data-image-index]').forEach(x => x.classList.toggle('active', x === btn));
   }));
 }
 
 function setupFilters() {
-  const buttons = document.querySelectorAll('[data-filter]');
-  const columns = document.querySelectorAll('.product-column');
+  const buttons = [...document.querySelectorAll('[data-filter]')];
+  const columns = [...document.querySelectorAll('.product-column')];
+  if (!buttons.length || !columns.length) return;
   const count = document.querySelector('#productCount');
-  if (!buttons.length) return;
-  const params = new URLSearchParams(window.location.search);
-  const initial = params.get('category');
+  const empty = document.querySelector('#emptyCategory');
+  const emptyTitle = document.querySelector('#emptyCategoryTitle');
+  const emptyText = document.querySelector('#emptyCategoryText');
+  const params = new URLSearchParams(location.search);
+  const requestedCategory = params.get('category') || 'all';
   const search = (params.get('search') || '').trim().toLowerCase();
+
   const filter = category => {
     let visible = 0;
-    columns.forEach(column => { const matches = (category === 'all' || column.dataset.category === category) && column.dataset.search.includes(search); column.classList.toggle('product-hidden', !matches); if (matches) visible += 1; });
+    columns.forEach(column => {
+      const categoryMatch = category === 'all' || column.dataset.category === category;
+      const searchMatch = !search || column.dataset.search.includes(search);
+      const show = categoryMatch && searchMatch;
+      column.hidden = !show;
+      if (show) visible += 1;
+    });
     buttons.forEach(button => button.classList.toggle('active', button.dataset.filter === category));
-    if (count) count.textContent = `${visible} product${visible === 1 ? '' : 's'}`;
+    const name = categoryNames[category] || 'Products';
+    if (count) count.textContent = search ? `${visible} result${visible === 1 ? '' : 's'} for “${params.get('search')}”` : `${visible} product${visible === 1 ? '' : 's'}`;
+    if (empty) {
+      empty.hidden = visible > 0;
+      if (!visible && futureCategories.has(category)) {
+        emptyTitle.textContent = `${name} is coming to TUSOROVA.`;
+        emptyText.textContent = `The ${name.toLowerCase()} department is already part of the website structure. Add products whenever you're ready.`;
+      } else if (!visible && search) {
+        emptyTitle.textContent = 'No products matched your search.';
+        emptyText.textContent = 'Try another product name, brand or model.';
+      }
+    }
+    const url = new URL(location.href);
+    if (category === 'all') url.searchParams.delete('category'); else url.searchParams.set('category', category);
+    history.replaceState({}, '', url);
   };
   buttons.forEach(button => button.addEventListener('click', () => filter(button.dataset.filter)));
-  filter(['kitchen', 'home', 'power', 'personal'].includes(initial) ? initial : 'all');
+  filter(categoryNames[requestedCategory] ? requestedCategory : 'all');
 }
 
-function setupSiteSearch() {
-  const form = document.querySelector('.marketplace-search');
+function setupSearch() {
+  const form = document.querySelector('.site-search');
   if (!form) return;
+  const input = form.querySelector('input');
+  const existing = new URLSearchParams(location.search).get('search') || '';
+  if (existing) input.value = existing;
   form.addEventListener('submit', event => {
     event.preventDefault();
-    const query = form.querySelector('input').value.trim();
-    window.location.href = query ? `products.html?search=${encodeURIComponent(query)}` : 'products.html';
+    const q = input.value.trim();
+    location.href = q ? `products.html?search=${encodeURIComponent(q)}` : 'products.html';
   });
 }
 
-function setupForms() {
-  document.querySelectorAll('form').forEach(form => form.addEventListener('submit', event => {
-    event.preventDefault();
-    const button = form.querySelector('button[type="submit"]');
-    if (!button) return;
-    const original = button.textContent;
-    button.textContent = 'Thank you!'; button.disabled = true;
-    setTimeout(() => { button.textContent = original; button.disabled = false; form.reset(); }, 2600);
-  }));
+function setupMobileMenu() {
+  const btn = document.querySelector('.mobile-menu-btn');
+  const nav = document.querySelector('#siteNav');
+  if (!btn || !nav) return;
+  btn.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
 }
 
-applyBranding();
-buildMarketplaceHeader();
+function setupContactForm() {
+  const form = document.querySelector('#contactWhatsAppForm');
+  if (!form) return;
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const name = document.querySelector('#contactName').value.trim();
+    const phone = document.querySelector('#contactPhone').value.trim();
+    const message = document.querySelector('#contactMessage').value.trim();
+    const text = `Assalamu Alaikum ${brandName}!\n\nName: ${name}\nPhone: ${phone}\n\n${message}`;
+    window.open(whatsappUrl(text), '_blank', 'noopener');
+  });
+}
+
 renderProducts();
 renderProductPage();
 setupFilters();
-setupSiteSearch();
-setupForms();
+setupSearch();
+setupMobileMenu();
+setupContactForm();
