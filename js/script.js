@@ -186,7 +186,7 @@ const categoryNames = {
 const futureCategories = new Set(['shoes', 'fashion', 'beauty', 'tools']);
 
 function orderUrlFor(product) {
-  const message = `Assalamu Alaikum ${brandName}!\n\nI would like to order this product:\n\nProduct: ${product.name}\nPrice: ${product.price}\nQuantity: 1\n\nPlease confirm stock, delivery charge and payment details.`;
+  const message = `আসসালামু আলাইকুম ${brandName}!\n\nআমি এই পণ্যটি অর্ডার করতে চাই:\n\nপণ্য: ${product.name}\nমূল্য: ${product.price}\nপরিমাণ: ১টি\n\nপণ্যটি স্টকে আছে কি না, ডেলিভারি চার্জ এবং পেমেন্টের বিস্তারিত জানাবেন।`;
   return whatsappUrl(message);
 }
 
@@ -323,7 +323,7 @@ function setupContactForm() {
     const name = document.querySelector('#contactName').value.trim();
     const phone = document.querySelector('#contactPhone').value.trim();
     const message = document.querySelector('#contactMessage').value.trim();
-    const text = `Assalamu Alaikum ${brandName}!\n\nName: ${name}\nPhone: ${phone}\n\n${message}`;
+    const text = `আসসালামু আলাইকুম ${brandName}!\n\nনাম: ${name}\nফোন: ${phone}\n\nবার্তা: ${message}`;
     window.open(whatsappUrl(text), '_blank', 'noopener');
   });
 }
