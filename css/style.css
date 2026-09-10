@@ -36,3 +36,32 @@
 .product-card .product-info{flex:0 0 auto}
 .product-card .product-title{min-height:0}
 .product-card .product-bottom{margin-top:0;padding-top:.65rem}
+.app-install{background:#e9f3ec;padding:1.5rem 0}
+.app-install[hidden],.app-install-help[hidden]{display:none}
+.app-install .container{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem}
+.app-install strong{font-size:1.1rem}.app-install p{margin:.4rem 0 0;line-height:1.6}
+.app-install-button{border:0;border-radius:10px;background:#111;color:#fff;padding:14px 20px;min-height:44px;cursor:pointer;font-weight:700}
+.app-install-help{flex-basis:100%;font-size:.9rem}
+@media(max-width:991px){
+ .header-main{grid-template-columns:44px minmax(0,1fr) 44px;gap:.6rem;padding-top:.5rem}
+ .brand-logo{width:min(180px,100%)}.header-whatsapp{grid-column:3;grid-row:1;width:44px;height:44px}
+ .mobile-menu-btn{width:44px;height:44px}.site-search{grid-column:1/-1;grid-row:2;height:46px}
+ .site-search input,.message-form input,.message-form textarea{font-size:16px}
+ .department-nav.open{max-height:65vh;overflow-y:auto}
+ .filter-button{min-height:44px}.filter-bar{padding-block:8px}
+}
+@media(max-width:767px){
+ .container{width:calc(100% - 24px)}
+ .hero-copy{padding:1.6rem 1.1rem}.hero-copy h1{font-size:clamp(2.2rem,10vw,3.2rem)}
+ .hero-lead{font-size:1rem}.shop-hero{padding:1.8rem 0 1rem}.shop-title-row h1{font-size:clamp(2.2rem,10vw,3.2rem)}
+ .section-space{padding:2.8rem 0}.shop-section{padding:1rem 0 2.5rem}
+ #shopProducts,#featuredProducts,.related-section .row{gap:.65rem}
+ .product-card .product-title{font-size:.85rem;overflow-wrap:anywhere}
+ .product-card .product-bottom{flex-wrap:wrap;gap:.45rem}
+ .shop-section .product-order,.product-order{font-size:.65rem;min-height:44px;width:auto;height:auto;border-radius:6px;padding:.55rem .65rem}
+ .shop-section .product-order span{font-size:.8rem}
+ .product-summary h1{font-size:clamp(1.8rem,8vw,2.6rem)}
+ .spec-row{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:.75rem;overflow-wrap:anywhere}
+ .footer-contact-mini a,.contact-card h3{overflow-wrap:anywhere}
+ .app-install-button{width:100%}.app-install{padding-bottom:calc(1.5rem + env(safe-area-inset-bottom))}
+}

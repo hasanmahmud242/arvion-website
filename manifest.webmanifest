@@ -1,0 +1,12 @@
+{
+  "id": "./",
+  "name": "TUSOROVA",
+  "short_name": "TUSOROVA",
+  "description": "Shop TUSOROVA products and order on WhatsApp.",
+  "start_url": "./index.html?source=app",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b0c0d",
+  "icons": [{"src":"assets/tusorova-app-icon.png","sizes":"1254x1254","type":"image/png","purpose":"any"}]
+}
