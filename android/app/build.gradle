@@ -1,0 +1,16 @@
+plugins { id 'com.android.application' }
+android {
+  namespace 'com.tusorova.shop'
+  compileSdk 35
+  defaultConfig { applicationId 'com.tusorova.shop'; minSdk 23; targetSdk 35; versionCode 1; versionName '1.0' }
+  signingConfigs {
+    release {
+      storeFile file(System.getenv('TUSOROVA_KEYSTORE') ?: '../../.android-signing/release.jks')
+      storePassword System.getenv('TUSOROVA_KEY_PASSWORD')
+      keyAlias 'tusorova'
+      keyPassword System.getenv('TUSOROVA_KEY_PASSWORD')
+    }
+  }
+  buildTypes { release { signingConfig signingConfigs.release; minifyEnabled false } }
+  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
