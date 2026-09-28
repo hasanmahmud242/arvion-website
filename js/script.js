@@ -263,6 +263,17 @@ function renderProductPage() {
   }));
 }
 
+function normalizeSearch(value) {
+  const aliases = { 'মিয়াকো':'miyako', 'মিয়াকো':'miyako', 'জাইপান':'jaipan', 'জয়পান':'jaipan', 'জয়পান':'jaipan', 'প্যানাসনিক':'panasonic', 'প্রেস্টিজ':'prestige', 'বাজাজ':'bajaj', 'কেমেই':'kemei', 'কেমি':'kemei', 'ভিজিআর':'vgr', 'কেটলি':'kettle', 'কুকার':'cooker', 'রাইস':'rice', 'মিক্সার':'mixer', 'গ্রাইন্ডার':'grinder', 'ট্রিমার':'trimmer', 'ক্লিপার':'clipper', 'ড্রায়ার':'dryer', 'ড্রায়ার':'dryer', 'ইস্ত্রি':'iron', 'আয়রন':'iron', 'আয়রন':'iron', 'হেয়ার':'hair', 'হেয়ার':'hair', 'হ্যান্ড':'hand', 'ইলেকট্রিক':'electric', 'রুটি':'roti', 'স্কেল':'scale', 'এয়ার':'air', 'এয়ার':'air', 'ফ্রায়ার':'fryer', 'ফ্রায়ার':'fryer' };
+  return String(value).normalize('NFC').toLowerCase().replace(/[০-৯]/g, digit => String('০১২৩৪৫৬৭৮৯'.indexOf(digit)))
+    .replace(/[\p{L}\p{M}]+/gu, word => aliases[word] || word).replace(/[^\p{L}\p{M}\p{N}]+/gu, ' ').trim();
+}
+
+function matchesProductSearch(productText, query) {
+  const text = normalizeSearch(productText).replace(/\s/g, '');
+  return normalizeSearch(query).split(/\s+/).filter(Boolean).every(term => text.includes(term));
+}
+
 function setupFilters() {
   const buttons = [...document.querySelectorAll('[data-filter]')];
   const columns = [...document.querySelectorAll('.product-column')];
@@ -279,7 +290,7 @@ function setupFilters() {
     let visible = 0;
     columns.forEach(column => {
       const categoryMatch = category === 'all' || column.dataset.category === category;
-      const searchMatch = !search || column.dataset.search.includes(search);
+      const searchMatch = !search || matchesProductSearch(column.dataset.search, search);
       const show = categoryMatch && searchMatch;
       column.hidden = !show;
       if (show) visible += 1;
